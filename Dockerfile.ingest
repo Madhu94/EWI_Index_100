@@ -1,0 +1,18 @@
+# ./docker/price-fetcher/Dockerfile
+
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy code
+COPY ingest_data.py /app/ingest_data.py
+COPY ./index100 /app/index100
+
+ENV API_KEY=${API_KEY}
+
+CMD ["python", "ingest_data.py", "2025-06-02:2025-07-14"]
+

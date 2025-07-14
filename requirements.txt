@@ -1,0 +1,11 @@
+pydantic==2.11.7
+Requests==2.32.4
+SQLAlchemy==2.0.41
+fastapi==0.116.1
+uvicorn==0.35.0
+redis==6.2.0
+aiosqlite>=0.19
+pandas==2.3.1
+xlsxwriter==3.2.5
+black==25.1.0
+isort==6.0.1

@@ -1,0 +1,52 @@
+services:
+  init-db:
+    image: nouchka/sqlite3:latest
+    container_name: sp100_init_db
+    volumes:
+      - ./data:/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    entrypoint: >
+      /bin/sh -c "sqlite3 /data/sp100.db < /docker-entrypoint-initdb.d/init.sql"
+    profiles: ["init"]
+
+  wipe-db:
+    image: nouchka/sqlite3:latest
+    container_name: sp100_wipe_db
+    volumes:
+      - ./data:/data
+      - ./db/wipe.sql:/docker-entrypoint-initdb.d/wipe.sql
+    entrypoint: >
+      /bin/sh -c "sqlite3 /data/sp100.db < /docker-entrypoint-initdb.d/wipe.sql"
+    profiles: ["reset"]
+
+  price-fetcher:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.ingest
+    volumes:
+      - ./data:/data
+    profiles: ["ingest"]
+    environment:
+      - API_KEY=${API_KEY}
+
+  index-composer:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.api
+    container_name: sp100_index_composer
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - DATABASE_URL=sqlite:///data/sp100.db
+    profiles: ["dev"]
+  
+  redis:
+    image: redis:7-alpine
+    container_name: cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    profiles: ["dev"]
