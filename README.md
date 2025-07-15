@@ -131,7 +131,7 @@ curl 'http://0.0.0.0:8000/returns/?start_date=2025-06-03&end_date=2025-06-04' \
 5. Export to excel
 
 ```
-curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-05&end_date=2025-06-07' \
+curl 'http://0.0.0.0:8000//export/index_report?start_date=2025-06-05&end_date=2025-06-07' \
   -X 'POST' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \

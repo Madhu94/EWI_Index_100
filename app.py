@@ -309,7 +309,7 @@ async def export_index_report(
         df_changes.to_excel(writer, sheet_name="Changes", index=False)
 
     output.seek(0)
-    filename = f"index_report_{today.isoformat()}.xlsx"
+    filename = f"index_report_{start_date}_{end_date.isoformat()}.xlsx"
     return StreamingResponse(
         output,
         media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
