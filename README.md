@@ -76,7 +76,7 @@ FastAPI endpoints would be exposed on http://0.0.0.0:8000/docs.
 1. Build and construct index
 
 ```
-curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-02&end_date=2025-06-03' \
+curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-02&end_date=2025-06-05' \
   -X 'POST' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \

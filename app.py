@@ -233,39 +233,14 @@ async def get_index_returns(
     return compute_returns(index_series, start_date)
 
 
-# TODO: Read this from database to ensure we pull in last 3 days which are available,
-# which may or may not exclude today.
-PAST_N_DAYS = 3
-
-
 @app.post("/export/index_report/")
-async def export_index_report():
+async def export_index_report(
+    start_date: date = Query(..., description="Start date in YYYY-MM-DD"),
+    end_date: date = Query(..., description="End date in YYYY-MM-DD"),
+):
     """
     Generates an Excel file with index performance, composition, and changes for the past 3 business days.
     """
-    today = date.today()
-
-    # Compute start and end dates
-    # Try today, fallback to yesterday
-    # FIXME: Hardcoding the date for assignment since latest data is sometimes not available
-    end_date = date(2025, 7, 14)
-
-    # end_date = today
-
-    try:
-        load_index_for_dates([end_date])
-    except Exception:
-        end_date = get_prev_date(today)
-        try:
-            load_index_for_dates([end_date])
-        except Exception:
-            raise HTTPException(
-                status_code=404, detail="No index data found for today or yesterday."
-            )
-
-    start_date = end_date
-    for _ in range(PAST_N_DAYS - 1):
-        start_date = get_prev_date(start_date)
 
     # Use expand_dates_for_returns for t-1 coverage
     dates = expand_dates_for_returns(start_date, end_date)
