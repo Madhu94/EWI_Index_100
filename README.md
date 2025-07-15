@@ -131,7 +131,7 @@ curl 'http://0.0.0.0:8000/index-performance/?start_date=2025-06-03&end_date=2025
 5. Export to excel
 
 ```
-curl 'http://0.0.0.0:8000//export-data?start_date=2025-06-05&end_date=2025-06-07' \
+curl 'http://0.0.0.0:8000/export-data/?start_date=2025-06-02&end_date=2025-06-04' \
   -X 'POST' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \
@@ -141,6 +141,8 @@ curl 'http://0.0.0.0:8000//export-data?start_date=2025-06-05&end_date=2025-06-07
   -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36' \
   -H 'accept: application/json' \
   --insecure
+
+```
 
 
 

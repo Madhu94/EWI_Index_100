@@ -233,7 +233,7 @@ async def get_index_returns(
     return compute_returns(index_series, start_date)
 
 
-@app.post("/export-data")
+@app.post("/export-data/")
 async def export_index_report(
     start_date: date = Query(..., description="Start date in YYYY-MM-DD"),
     end_date: date = Query(..., description="End date in YYYY-MM-DD"),
