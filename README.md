@@ -1,5 +1,3 @@
-
-
 ## Implemnetation notes
 
 * Data Acquisition
@@ -148,6 +146,8 @@ curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-05&end_date=2025-06-0
 
 ## Design Doc
 
+See [here](docs/design.md)
+
 ## Productionization notes
 
-## Future Improvements for scale
+See [here](docs/productionize.md)
