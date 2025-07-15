@@ -76,7 +76,7 @@ FastAPI endpoints would be exposed on http://0.0.0.0:8000/docs.
 1. Build and construct index
 
 ```
-curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-02&end_date=2025-06-05' \
+curl 'http://0.0.0.0:8000/build-index?start_date=2025-06-02&end_date=2025-06-05' \
   -X 'POST' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \
@@ -92,7 +92,7 @@ curl 'http://0.0.0.0:8000/compose-index?start_date=2025-06-02&end_date=2025-06-0
 2. Fetch Index & Membership details
 
 ```
-curl 'http://0.0.0.0:8000/indexes/?start_date=2025-06-02&end_date=2025-06-02' \
+curl 'http://0.0.0.0:8000/index-composition/?start_date=2025-06-02&end_date=2025-06-02' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \
   -H 'Referer: http://0.0.0.0:8000/docs' \
@@ -105,7 +105,7 @@ curl 'http://0.0.0.0:8000/indexes/?start_date=2025-06-02&end_date=2025-06-02' \
 3. Fetch changes in Index composition
 
 ```
-curl 'http://0.0.0.0:8000/changes/?start_date=2025-06-02&end_date=2025-06-03' \
+curl 'http://0.0.0.0:8000/composition-changes/?start_date=2025-06-02&end_date=2025-06-03' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \
   -H 'Referer: http://0.0.0.0:8000/docs' \
@@ -118,7 +118,7 @@ curl 'http://0.0.0.0:8000/changes/?start_date=2025-06-02&end_date=2025-06-03' \
 4. Compute Index Returns
 
 ```
-curl 'http://0.0.0.0:8000/returns/?start_date=2025-06-03&end_date=2025-06-04' \
+curl 'http://0.0.0.0:8000/index-performance/?start_date=2025-06-03&end_date=2025-06-04' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \
   -H 'Referer: http://0.0.0.0:8000/docs' \
@@ -131,7 +131,7 @@ curl 'http://0.0.0.0:8000/returns/?start_date=2025-06-03&end_date=2025-06-04' \
 5. Export to excel
 
 ```
-curl 'http://0.0.0.0:8000//export/index_report?start_date=2025-06-05&end_date=2025-06-07' \
+curl 'http://0.0.0.0:8000//export-data?start_date=2025-06-05&end_date=2025-06-07' \
   -X 'POST' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
   -H 'Connection: keep-alive' \

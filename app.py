@@ -58,7 +58,7 @@ def compose_and_persist_index_range(start_date: DateType, end_date: DateType) ->
         persist_changes(changes)
 
 
-@app.post("/compose-index")
+@app.post("/build-index")
 async def compose_index_for_dates(
     start_date: date = Query(..., description="Start date in YYYY-MM-DD"),
     end_date: date = Query(..., description="End date in YYYY-MM-DD"),
@@ -84,7 +84,7 @@ async def compose_index_for_dates(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/indexes/", response_model=Dict[date, EWIIndex100])
+@app.get("/index-composition/", response_model=Dict[date, EWIIndex100])
 async def get_indexes(
     start_date: date = Query(..., description="Start date (YYYY-MM-DD)"),
     end_date: date = Query(..., description="End date (YYYY-MM-DD)"),
@@ -129,7 +129,7 @@ async def get_indexes(
     return found
 
 
-@app.get("/changes/", response_model=Dict[date, List[Change]])
+@app.get("/composition-changes/", response_model=Dict[date, List[Change]])
 async def get_changes(
     start_date: date = Query(..., description="Start date (YYYY-MM-DD)"),
     end_date: date = Query(..., description="End date (YYYY-MM-DD)"),
@@ -183,7 +183,7 @@ def expand_dates_for_returns(start_date: date, end_date: date) -> List[date]:
     return [get_prev_date(start_date)] + expand_dates(start_date, end_date)
 
 
-@app.get("/returns/", response_model=Dict[date, Return])
+@app.get("/index-performance/", response_model=Dict[date, Return])
 async def get_index_returns(
     start_date: date = Query(...), end_date: date = Query(...)
 ) -> Dict[date, Return]:
@@ -233,7 +233,7 @@ async def get_index_returns(
     return compute_returns(index_series, start_date)
 
 
-@app.post("/export/index_report/")
+@app.post("/export-data")
 async def export_index_report(
     start_date: date = Query(..., description="Start date in YYYY-MM-DD"),
     end_date: date = Query(..., description="End date in YYYY-MM-DD"),
