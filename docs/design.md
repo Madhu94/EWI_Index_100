@@ -16,7 +16,10 @@
     * `REBALANCE` - a stock which is part of the index has its notional number
     of shares adjusted so that it contributes an equal notional value to the index
    - **Change** - Represents an IndexOperation on a given date on a particular Stock.
-* All the utilities for working with an index are modelled as functions which take in Index Models and return Index models. These ae completely immutable operations.
+* All the utilities for working with an index are modelled as functions which take in Index Models and return Index models. These ae completely 
+immutable operations.
+* SQLAlchemy ORM also uses mutation tracking and was also not compatible with the immutable style used in the current code. Hence the
+sqlalchemy core layer is used.
 * See `compose.py`, `models.py`
 * `returns.py` which has logic for computing daily and cumulative returns also works with pydantic models.
 

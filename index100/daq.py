@@ -12,6 +12,9 @@ import requests
 
 # TODO: Move to a secrets storage system.
 FMP_API_KEY = os.environ["API_KEY"]
+
+# This is a hack to ovecome the limitations of Free tier in FMP API.
+# Limitations aed documented in docs/production.md
 UNIVERSE = ["AAPL", "MSFT", "GOOG", "V", "NVDA", "RBRK", "META", "AMZN", "JPM", "UNH"]
 
 

@@ -54,6 +54,9 @@ def compose_and_persist_index_range(start_date: DateType, end_date: DateType) ->
 
     for current_date in expand_dates(start_date, end_date):
         index, changes = compose_index(current_date)
+        # TODO: Persist index and changes in a single transaction.
+        # Refactor persist_index and persist changes to take in an
+        # engine.
         persist_index(index)
         persist_changes(changes)
 
@@ -78,10 +81,17 @@ async def compose_index_for_dates(
             "status": "ok",
             "message": f"Indexes and changes composed for {start_date} to {end_date}",
         }
-    except ValueError as ve:
-        raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
+        # TODO: Distinguish client side bad requests too, like start date < base date of
+        # index or any of the dates > today
         raise HTTPException(status_code=500, detail=str(e))
+
+
+# TODO: Do not write to cache directly from the endpoint logic.
+# The code here is also repetitive across /index-composition and /composition-changes
+# endpoints.
+# After finalizing the cache policy, we can move the cache + db fallback logic to a
+# separate utility or decorator.
 
 
 @app.get("/index-composition/", response_model=Dict[date, EWIIndex100])
@@ -108,10 +118,8 @@ async def get_indexes(
     for date_obj, key in zip(dates, keys):
         data = redis_results.get(key)
         if data:
-            print("Cache found...", data, date_obj, key)
             found[date_obj] = EWIIndex100.model_validate_json(data)
         else:
-            print("Cache miss...", data, date_obj, key)
             missing_dates.append(date_obj)
 
     # Load missing from DB if needed

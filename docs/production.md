@@ -50,24 +50,24 @@ To run the data ingestion job daily. Some thoughts on deciding how to pick this:
 * **Schema Model** - 
     - `REBALANCE` events in changes can have more information on the changed weights too 
     - Instead of maintaining per day snapshot and aggregated version, an alternative model where we log just the changes and construct a materialized view out of aggregating the changes table (the idea behind event sourcing). We can save snapshots of aggregated state in the materialized view, and the API layer can just read the aggregated state or read closest (snapshot) aggregated state + relevant changes and arrive at a new state. This can save space in case our index does not change a lot. It also makes the changes table the source of truth and the aggregated state (index and constituents) as a derived data.
-
+* **Evaluate SQLModel library** - [SQLModel](https://sqlmodel.tiangolo.com/). I used sqlalchemy core and not ORM, to avoid having both ORM and Pydantic models.
 
 ### Redis
 
 **Current State**
-* Default setting of noeviction.
-* Single redis instance
-* RDB snapshot persistance with default interval.
+* Default setting of noeviction for cache eviction.
+* Single redis instance deployment
+* RDB snapshot persistance (taken at default intervals).
 
 
 **Moving to production**
-* **Deployment**: The access pattern is read heavy, with higher likelihood of accessing recent index returns. A good default might be to cache 1 month data by default. If the data does fit in memory, we can use Redis Sentinel mode, if not, we can use Redis Cluster.
+* **Deployment**: The access pattern is read heavy, with higher likelihood of accessing recent index returns. A good default might be to cache 1 month data by default. If the data does fit in memory, we can use Redis Sentinel mode (1 primary, with replicas), if not, we can use Redis Cluster.
 * **Persistance**: RDB Files with periodic snapshot uploaded to S3.
 * **Eviction**: Two choices we can consider are LRU, and caching last N days data. LRU could be a good default but it's possible the occasional rare request accessing old data could evict the data for more common requests for recent data. Caching last N days always would be better for this use case.
-
 
 
 ### Miscellaneous
 
 * NYSE / Custom Trading Calendar support instead of just weekdays.
-* Data Alerts
+* Data Alerts - For missing data.
+* Handle failures with retries and backoffs for persisting to cache & db, given that all persist operations are idempotent.

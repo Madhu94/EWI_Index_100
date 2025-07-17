@@ -17,6 +17,9 @@ class Return(BaseModel):
     cumulative_return: float
 
 
+# TODO: If we take the worst case as computing daily returns for a whole year,
+# or even 3 years...that comes to ~300-700 rows. Pandas vectorization is probably
+# not worth it. Profile for a year and modify accordingly.
 def compute_returns(
     index_series: List[EWIIndex100], start_date: date
 ) -> Dict[date, Return]:

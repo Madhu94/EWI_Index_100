@@ -32,10 +32,7 @@ def get_engine() -> Engine:
     global _engine
     if _engine is None:
         _engine = create_engine(
-            DATABASE_URL,
-            echo=False,
-            future=True,
-            connect_args={"check_same_thread": False},  # Needed for SQLite + async
+            DATABASE_URL, echo=False, isolation_level="REPEATABLE READ"
         )
     return _engine
 
@@ -239,6 +236,7 @@ def persist_index(index: EWIIndex100):
     Stores the index level and members data.
     Does NOT write price or shares_outstanding to marketdata —
     assumes marketdata is managed separately.
+
     """
     engine = get_engine()
     metadata = get_metadata()

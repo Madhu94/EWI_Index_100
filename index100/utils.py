@@ -19,7 +19,9 @@ MARKET_HOLIDAYS_2025 = {
 
 def get_prev_date(current_date: date) -> date:
     """
-    Returns the previous business day, skipping weekends.
+    Returns the previous business day, skipping weekends
+    and holidays.
+
     """
     prev = current_date - timedelta(days=1)
     while prev.weekday() >= 5 or prev in MARKET_HOLIDAYS_2025:
@@ -29,7 +31,9 @@ def get_prev_date(current_date: date) -> date:
 
 def get_next_date(current_date: date) -> date:
     """
-    Returns the next business day, skipping weekends.
+    Returns the next business day, skipping weekends
+    and holidays.
+
     """
     nxt = current_date + timedelta(days=1)
     while nxt.weekday() >= 5 or nxt in MARKET_HOLIDAYS_2025:
@@ -53,8 +57,8 @@ def is_valid_index_date(d: date) -> bool:
       - It’s a valid market date (weekday, not holiday)
       - AND date >= base_date from settings
     If base_date is missing: return False instead of raising.
+
     """
-    from .db import get_index_settings
 
     base_date_str = get_index_settings().get("base_date")
     if not base_date_str:

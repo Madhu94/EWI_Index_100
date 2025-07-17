@@ -182,7 +182,6 @@ def compose_index(target_date: date) -> Tuple[EWIIndex100, List[Change]]:
         members = []
         for s in top_stocks:
             notional_num_shares = target_weight / s.price
-            print(s, target_weight, notional_num_shares)
             members.append(
                 IndexMember(stock=s, notional_num_shares=notional_num_shares)
             )
