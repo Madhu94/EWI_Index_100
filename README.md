@@ -53,7 +53,8 @@ First command can be skipped if the database doesn't exist.
 The above commands need sudo permissions if rootless docker is not used and if you
 are not a member of docker user group.
 
-3. Run Data Ingestion.
+3. Run Data Ingestion. **Note** This takes a few minutes to ingest data for more than a month.
+Also, the subsequent API calls work only for the dates for which the market data is persisted.
 
 ```
 docker compose --profile ingest up --build
@@ -71,9 +72,15 @@ docker compose --profile dev up --build
 FastAPI endpoints would be exposed on http://0.0.0.0:8000/docs.
 
 ## API Invocations
+
 (Dev mode - no auth)
 
 1. Build and construct index
+
+**Note** Fails for a date if build-index is not run for the the previous date. This means build-index
+needs to be run for consecutive dates from the base date onwards and not out of order.
+In production, we'd have alerts and monitoring to address any missing data like this, but in deveclopment,
+this makes for a less ideal DevEx.
 
 ```
 curl 'http://0.0.0.0:8000/build-index?start_date=2025-06-02&end_date=2025-06-05' \
@@ -91,6 +98,8 @@ curl 'http://0.0.0.0:8000/build-index?start_date=2025-06-02&end_date=2025-06-05'
 
 2. Fetch Index & Membership details
 
+**Note** Fails if build-index is not run for the the dates queried
+
 ```
 curl 'http://0.0.0.0:8000/index-composition/?start_date=2025-06-02&end_date=2025-06-02' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
@@ -103,6 +112,8 @@ curl 'http://0.0.0.0:8000/index-composition/?start_date=2025-06-02&end_date=2025
 ```
 
 3. Fetch changes in Index composition
+
+**Note** Fails if build-index is not run for the the dates queried
 
 ```
 curl 'http://0.0.0.0:8000/composition-changes/?start_date=2025-06-02&end_date=2025-06-03' \
@@ -117,6 +128,8 @@ curl 'http://0.0.0.0:8000/composition-changes/?start_date=2025-06-02&end_date=20
 
 4. Compute Index Returns
 
+**Note** Fails if build-index is not run for the the dates queried
+
 ```
 curl 'http://0.0.0.0:8000/index-performance/?start_date=2025-06-03&end_date=2025-06-04' \
   -H 'Accept-Language: en-GB,en-US;q=0.9,en;q=0.8' \
@@ -129,6 +142,8 @@ curl 'http://0.0.0.0:8000/index-performance/?start_date=2025-06-03&end_date=2025
 ```
 
 5. Export to excel
+
+**Note** Fails if build-index is not run for the the dates queried
 
 ```
 curl 'http://0.0.0.0:8000/export-data/?start_date=2025-06-02&end_date=2025-06-04' \
