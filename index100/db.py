@@ -31,9 +31,7 @@ def get_engine() -> Engine:
     """
     global _engine
     if _engine is None:
-        _engine = create_engine(
-            DATABASE_URL, echo=False, isolation_level="REPEATABLE READ"
-        )
+        _engine = create_engine(DATABASE_URL, echo=False)
     return _engine
 
 
